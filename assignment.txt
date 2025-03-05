@@ -1,0 +1,34 @@
+Assignment: CSV File Parser Backend 
+Objective
+Create a backend service that reads a CSV file from the local system, processes each row, and logs details such as:
+Total rows processedService
+Successfully parsed rows
+Failed rows due to errors
+Time taken to parse the file
+Project Requirements
+1. Read CSV File
+The service should read a CSV file from the local system.
+It should log the total number of rows in the file before processing.
+2. Parse Each Row
+The service should iterate row by row in the CSV.
+If a row is valid, it should count as a successful row.
+If there's a parsing error, it should log a detailed error message and continue processing the next row.
+3. Error Handling & Logging
+If a row has missing or invalid data, log an error with the row number and reason for failure.
+The service should not stop on errors—continue processing the next rows.
+4. Logging Output
+At the end of processing, log the following summary:
+✔ Total Rows → Total rows in the file
+✔ Success Row Count → Number of valid rows processed
+✔ Failed Row Count → Number of rows with errors
+✔ Time Taken → Total time taken to parse the file
+
+
+
+POST api/report-service/parse-csv
+
+
+body:{
+  fileName 'temp.csv',
+  path: /user/download/
+}
