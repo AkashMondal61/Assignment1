@@ -1,6 +1,6 @@
 import express from "express";
 import fs from "fs";
-import path from "path";
+import p from "path";
 import csv from "csv-parser";
 import os from "os";
 import dotenv from "dotenv";
@@ -30,7 +30,6 @@ class err extends Error {
   }
 // API Endpoint: Root - Provides a simple UI with available endpoints
 app.get("/", (req, res) => {
-  console.log(os.homedir()); // Log the home directory for debugging
   res.send(`
     <ul>
       <li><strong>POST</strong> <a href="http://localhost:${PORT}/api/report-service/parse-csv" target="_blank">/api/report-service/parse-csv</a></li>
@@ -40,7 +39,7 @@ app.get("/", (req, res) => {
 // API Endpoint: Parse CSV File
 app.post("/api/report-service/parse-csv", (req, res) => {
   try {
-    const { fileName, Path } = req.body;
+    const { fileName, path } = req.body;
 
     // Validate request body - Ensure fileName is provided
     if (!fileName) {
@@ -48,18 +47,16 @@ app.post("/api/report-service/parse-csv", (req, res) => {
     }
     
     // Validate request body - Ensure file path is provided
-    if (!Path) {
-        throw new err("Path is required.", process.env.STATUS_BAD_REQUEST );
+    if (!path) {
+        throw new err("path is required.", process.env.STATUS_BAD_REQUEST );
     }
 
     // Construct the absolute file path using the home directory
-    const filePath = path.join(os.homedir(), Path, fileName);
-    console.log(filePath)
+    const filePath = p.join(os.homedir(), path, fileName);
     // Check if the file exists
     if (!fs.existsSync(filePath)) {
         throw new err(`File "${fileName}" not found in the provided path.`, process.env.STATUS_NOT_FOUND);
     }
-    console.log(filePath)
     // Initialize counters to track the CSV processing results
     let totalRows = 0;
     let successRows = 0;
